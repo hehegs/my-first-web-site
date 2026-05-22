@@ -1,26 +1,720 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-<title>WEB1 - Welcome</title>
-<meta charset="utf-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>6학년 영어 3단원 평가 — When Is Your Birthday?</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Nanum Gothic', sans-serif;
+    margin: 0;
+    background: linear-gradient(135deg, #fef9e7 0%, #ffe8d6 100%);
+    min-height: 100vh;
+    color: #2c3e50;
+    padding: 16px;
+  }
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  }
+  h1 { color: #e67e22; text-align: center; margin: 0 0 8px; font-size: 26px; }
+  .subtitle { text-align: center; color: #888; margin-bottom: 28px; font-size: 14px; }
+  .login-form { display: flex; flex-direction: column; gap: 14px; }
+  .login-form label { font-weight: bold; color: #555; font-size: 14px; margin-bottom: 2px; }
+  .login-form input, .login-form select {
+    padding: 12px;
+    font-size: 16px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    width: 100%;
+    font-family: inherit;
+  }
+  .login-form input:focus, .login-form select:focus {
+    border-color: #f39c12;
+    outline: none;
+  }
+  button {
+    padding: 14px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    background: #f39c12;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    font-family: inherit;
+  }
+  button:hover:not(:disabled) { background: #e67e22; }
+  button:active:not(:disabled) { transform: scale(0.98); }
+  button:disabled { background: #ccc; cursor: not-allowed; }
+  .btn-secondary { background: #95a5a6; }
+  .btn-secondary:hover:not(:disabled) { background: #7f8c8d; }
+  .progress {
+    height: 10px;
+    background: #f0f0f0;
+    border-radius: 5px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #f39c12, #e67e22);
+    transition: width 0.3s;
+  }
+  .q-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #888;
+  }
+  .q-num { font-weight: bold; color: #2c3e50; font-size: 16px; }
+  .q-domain {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 12px;
+  }
+  .q-domain.reception { background: #d4edda; color: #155724; }
+  .q-domain.representing { background: #d1ecf1; color: #0c5460; }
+  .q-text {
+    font-size: 18px;
+    line-height: 1.6;
+    margin: 14px 0 18px;
+    font-weight: 500;
+  }
+  .dialogue {
+    background: #f9f9f9;
+    border-left: 4px solid #f39c12;
+    padding: 14px 18px;
+    margin: 14px 0;
+    border-radius: 4px;
+    line-height: 1.7;
+    white-space: pre-line;
+    font-size: 16px;
+  }
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option {
+    display: flex;
+    align-items: center;
+    padding: 14px 16px;
+    background: #fafafa;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .option:hover { background: #fef5e7; border-color: #f5b041; }
+  .option input[type="radio"] { margin-right: 12px; width: 18px; height: 18px; cursor: pointer; }
+  .option.selected { background: #fef5e7; border-color: #f39c12; }
+  .short-input {
+    padding: 14px;
+    font-size: 18px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    width: 100%;
+    font-family: inherit;
+  }
+  .short-input:focus { border-color: #f39c12; outline: none; }
+  .tts-btn {
+    background: #3498db;
+    border: none;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 8px 0 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .tts-btn:hover { background: #2980b9; }
+  .tts-hint { font-size: 13px; color: #888; margin-left: 8px; }
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 24px;
+    gap: 10px;
+  }
+  .nav button { min-width: 110px; }
+  .score-card {
+    text-align: center;
+    padding: 24px;
+    background: linear-gradient(135deg, #fff5e6, #fef9e7);
+    border-radius: 12px;
+    margin-bottom: 20px;
+  }
+  .score-num {
+    font-size: 56px;
+    color: #e67e22;
+    font-weight: bold;
+    line-height: 1.1;
+  }
+  .score-domain { margin-top: 10px; color: #666; font-size: 16px; }
+  .review-list { margin-top: 20px; }
+  .review-item {
+    padding: 14px 16px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border-left: 4px solid #ddd;
+    background: #fafafa;
+  }
+  .review-item.correct { border-left-color: #27ae60; background: #eaf7ef; }
+  .review-item.wrong { border-left-color: #e74c3c; background: #fdecea; }
+  .review-num { font-weight: bold; margin-right: 6px; }
+  .review-mark { float: right; font-size: 22px; font-weight: bold; }
+  .review-mark.correct { color: #27ae60; }
+  .review-mark.wrong { color: #e74c3c; }
+  .review-q { color: #444; margin: 6px 0; font-size: 15px; line-height: 1.5; }
+  .review-ans { font-size: 14px; color: #666; line-height: 1.6; }
+  .review-ans .your { color: #c0392b; font-weight: bold; }
+  .review-ans .ok { color: #27ae60; font-weight: bold; }
+  .hidden { display: none !important; }
+  @media (max-width: 480px) {
+    .container { padding: 18px; border-radius: 12px; }
+    h1 { font-size: 22px; }
+    .q-text { font-size: 16px; }
+    .option, .short-input { font-size: 15px; }
+    .score-num { font-size: 44px; }
+  }
+</style>
 </head>
 <body>
-    <h1><a href="index.html">WEB</a></h1>
-    <ol>
-        <li><a href="1.html">HTML</a></li>
-        <li><a href="2.html">CSS</a></li>
-        <li><a href="3.html">JavaScript</a></li>
-    </ol>
-    <h2>HTML이란 무엇인가?</h2> 
-    <a href="https://www.w3.org/TR/2011/WD-html5-20110405/" target="_blank" title="html5 specification">태그는 HTML 문서의 메타데이터(metadata)를 포함하는 영역</a>으로, 문서의 제목, 스타일 시트, 자바스크립트 파일, 문자 인코딩, 검색 엔진 최적화 등의 정보를 포함합니다. 
-    <br><br>이 정보들은 브라우저가 웹 페이지를 로드할 때 페이지의 콘텐츠를 렌더링하기 전에 처리됩니다.
-    <p style="margin-top:40px;">
-        <img src="image.jpg" alt="이미지" style="width: 50%;"
-    </p>
-    <p>
-        이것은 이미지와 함께 나타난 단락입니다.
-    </p>
-    <p>이것은 단락입니다.</p>
-    <img src="coding.jpg" width="50%">
+<div class="container">
+
+  <!-- ▼ Login -->
+  <div id="login">
+    <h1>🎂 6학년 영어 3단원 평가</h1>
+    <p class="subtitle">Lesson 3. When Is Your Birthday?</p>
+    <div class="login-form">
+      <div>
+        <label>학년</label>
+        <select id="grade">
+          <option value="">선택</option>
+          <option value="6">6학년</option>
+        </select>
+      </div>
+      <div>
+        <label>반</label>
+        <select id="class">
+          <option value="">선택</option>
+          <option value="1">1반</option>
+          <option value="2">2반</option>
+          <option value="3">3반</option>
+          <option value="4">4반</option>
+          <option value="5">5반</option>
+          <option value="6">6반</option>
+        </select>
+      </div>
+      <div>
+        <label>번호</label>
+        <input id="number" type="number" min="1" max="40" placeholder="번호를 입력하세요">
+      </div>
+      <div>
+        <label>이름</label>
+        <input id="name" type="text" placeholder="이름을 입력하세요" maxlength="10">
+      </div>
+      <button onclick="startTest()">시험 시작하기</button>
+      <p class="subtitle" style="margin-top:14px;">총 20문항 · 이해 10 + 표현 10<br>듣기 문제는 🔊 듣기 버튼을 눌러 들으세요.</p>
+    </div>
+  </div>
+
+  <!-- ▼ Test -->
+  <div id="test" class="hidden">
+    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+    <div id="questionContainer"></div>
+    <div class="nav">
+      <button class="btn-secondary" id="prevBtn" onclick="prevQuestion()">← 이전</button>
+      <button id="nextBtn" onclick="nextQuestion()">다음 →</button>
+      <button id="submitBtn" onclick="submitTest()" class="hidden">제출하기 ✓</button>
+    </div>
+  </div>
+
+  <!-- ▼ Results -->
+  <div id="results" class="hidden">
+    <h1>📋 시험 결과</h1>
+    <div class="score-card">
+      <div id="studentInfo" style="font-size:15px;color:#555;margin-bottom:10px;"></div>
+      <div class="score-num" id="scoreNum">0 / 20</div>
+      <div class="score-domain" id="scoreDomain"></div>
+      <div id="sendStatus" style="margin-top:14px;font-size:14px;font-weight:bold;"></div>
+    </div>
+    <div class="review-list" id="reviewList"></div>
+    <div class="nav">
+      <button onclick="downloadResult()">📥 결과 저장 (.txt)</button>
+      <button class="btn-secondary" onclick="if(confirm('정말 다시 시작할까요? 결과가 사라집니다.')) location.reload()">🔄 다시 시작</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ====== ▼ 선생님이 여기에 GAS 웹앱 URL을 붙여넣으세요 ▼ ======
+   Apps Script 배포 후 받은 URL을 아래 따옴표 안에 그대로 넣으세요.
+   예: const GAS_URL = "https://script.google.com/macros/s/AKfycby.../exec";
+*/
+const GAS_URL = "https://script.google.com/macros/s/AKfycbyrqm2DpMt-OzoVExQijJS3ONdmeFQXEzND06841o5ZTBou1lDk5HxFw-pWyarr95gM/exec";
+
+/* ====== Question Bank — Lesson 3 dialogues only ====== */
+const questions = [
+  // ====== 이해 (Reception) — 10 ======
+  {
+    domain: 'reception', type: 'mc',
+    listenText: "When is your birthday?",
+    q: "🔊 잘 듣고 알맞은 의미를 고르세요.",
+    options: ['너의 생일은 언제니?', '너의 이름은 뭐니?', '생일 축하해', '너는 어디 사니?'],
+    answer: 0
+  },
+  {
+    domain: 'reception', type: 'mc',
+    listenText: "It's on May twelfth.",
+    q: "🔊 잘 듣고 알맞은 날짜를 고르세요.",
+    options: ['5월 2일', '5월 12일', '12월 5일', '5월 20일'],
+    answer: 1
+  },
+  {
+    domain: 'reception', type: 'mc',
+    listenText: "Can you come to my birthday party?",
+    q: "🔊 잘 듣고 알맞은 대답을 고르세요.",
+    options: ['Happy birthday!', 'Sure, I can.', 'Goodbye.', 'Thank you.'],
+    answer: 1
+  },
+  {
+    domain: 'reception', type: 'mc',
+    listenText: "The drone show is on May second.",
+    q: "🔊 잘 듣고 드론 쇼 날짜를 고르세요.",
+    options: ['3월 2일', '5월 2일', '5월 22일', '2월 5일'],
+    answer: 1
+  },
+  {
+    domain: 'reception', type: 'mc',
+    dialogue: "Suho: My birthday is coming.\nLucas: When is your birthday?\nSuho: It's on April 27th.",
+    q: "다음 대화를 읽고, 수호의 생일을 고르세요.",
+    options: ['4월 17일', '4월 27일', '7월 4일', '4월 7일'],
+    answer: 1
+  },
+  {
+    domain: 'reception', type: 'mc',
+    dialogue: "A: ____ is the school festival?\nB: It's on November 14th.",
+    q: "빈칸에 들어갈 알맞은 말을 고르세요.",
+    options: ['What', 'Where', 'When', 'Who'],
+    answer: 2
+  },
+  {
+    domain: 'reception', type: 'mc',
+    q: "\"Sorry, I can't.\" 의 우리말 의미는?",
+    options: ['미안해, 나는 갈 수 없어.', '그럼, 갈 수 있어.', '미안해, 늦었어.', '괜찮아, 고마워.'],
+    answer: 0
+  },
+  {
+    domain: 'reception', type: 'mc',
+    dialogue: "Can you come to my birthday party?\nWhen: December 11th, 5 o'clock\nWhere: My house",
+    q: "다음 초대장에서 파티 장소는?",
+    options: ['ABC Park', '학교', 'My house', '식당'],
+    answer: 2
+  },
+  {
+    domain: 'reception', type: 'mc',
+    listenText: "When is YES Day? It's on April seventeenth.",
+    q: "🔊 잘 듣고 YES Day의 날짜를 고르세요.",
+    options: ['4월 7일', '4월 17일', '4월 27일', '5월 17일'],
+    answer: 1
+  },
+  {
+    domain: 'reception', type: 'mc',
+    dialogue: "Molly: We'll have a dance party.\nWilly: When is the dance party?\nMolly: It's on November 15th.",
+    q: "위 대화의 내용과 일치하지 않는 것은?",
+    options: [
+      'Molly는 댄스 파티를 연다.',
+      'Willy가 날짜를 묻고 있다.',
+      '댄스 파티는 11월 5일이다.',
+      'Molly가 날짜를 답한다.'
+    ],
+    answer: 2
+  },
+
+  // ====== 표현 (Representing) — 10 ======
+  {
+    domain: 'representing', type: 'short',
+    q: "'4월'을 영어로 쓰시오. (첫 글자는 대문자)",
+    answers: ['April'],
+    hint: '예) January'
+  },
+  {
+    domain: 'representing', type: 'short',
+    q: "빈칸에 알맞은 한 단어를 쓰시오.\nIt's ___ June 4th.  (6월 4일에)",
+    answers: ['on'],
+    hint: '소문자 한 단어'
+  },
+  {
+    domain: 'representing', type: 'short',
+    q: "'9월'을 영어로 쓰시오. (첫 글자는 대문자)",
+    answers: ['September'],
+    hint: 'Sep...'
+  },
+  {
+    domain: 'representing', type: 'short',
+    q: "빈칸에 알맞은 말을 쓰시오. (축약형으로)\nA: When is your birthday?\nB: ___ on March 3rd.",
+    answers: ["It's", "Its"],
+    hint: "두 글자 + 's"
+  },
+  {
+    domain: 'representing', type: 'short',
+    q: "빈칸에 알맞은 날짜 표현을 쓰시오.\nIt's on April ___ . (4월 17일)",
+    answers: ['17th', 'seventeenth'],
+    hint: '숫자 + th 또는 영어 서수'
+  },
+  {
+    domain: 'representing', type: 'mc',
+    q: "'Can you come to my birthday party?'에 '그럼, 나는 갈 수 있어.'라고 답하려면?",
+    options: ['Sure, I can.', "Sorry, I can't.", 'Yes, I do.', 'Thank you.'],
+    answer: 0
+  },
+  {
+    domain: 'representing', type: 'short',
+    q: "단어를 바르게 배열하여 문장을 완성하시오. (드론 쇼는 언제니?)\n[ drone / is / the / show / when ]",
+    answers: ['When is the drone show?', 'When is the drone show'],
+    hint: '첫 글자는 대문자, ? 포함'
+  },
+  {
+    domain: 'representing', type: 'short',
+    q: "빈칸에 알맞은 한 단어를 쓰시오.  (학교 축제는 언제니?)\nWhen is the school ___ ?",
+    answers: ['festival'],
+    hint: '축제 = ?'
+  },
+  {
+    domain: 'representing', type: 'mc',
+    q: "'그림 작품을 전시하는 행사'를 영어로 무엇이라 하나요?",
+    options: ['school festival', 'art show', 'book festival', 'science quiz'],
+    answer: 1
+  },
+  {
+    domain: 'representing', type: 'short',
+    q: "'나의 생일 파티에 올 수 있니?'를 영어로 쓰시오.",
+    answers: [
+      'Can you come to my birthday party?',
+      'Can you come to my birthday party'
+    ],
+    hint: '대문자/물음표 포함'
+  }
+];
+
+/* ====== State ====== */
+let currentQ = 0;
+let answers = new Array(questions.length).fill(null);
+let studentInfo = {};
+
+/* ====== Login ====== */
+function startTest() {
+  const grade = document.getElementById('grade').value;
+  const cls = document.getElementById('class').value;
+  const num = document.getElementById('number').value;
+  const name = document.getElementById('name').value.trim();
+  if (!grade || !cls || !num || !name) {
+    alert('학년, 반, 번호, 이름을 모두 입력해 주세요.');
+    return;
+  }
+  studentInfo = { grade, cls, num, name, startTime: new Date() };
+  document.getElementById('login').classList.add('hidden');
+  document.getElementById('test').classList.remove('hidden');
+  currentQ = 0;
+  renderQuestion();
+}
+
+/* ====== Render ====== */
+function renderQuestion() {
+  const q = questions[currentQ];
+  const container = document.getElementById('questionContainer');
+  let html = '';
+
+  html += '<div class="q-meta">';
+  html += '<span class="q-num">문제 ' + (currentQ + 1) + ' / ' + questions.length + '</span>';
+  html += '<span class="q-domain ' + q.domain + '">' + (q.domain === 'reception' ? '이해' : '표현') + '</span>';
+  html += '</div>';
+
+  if (q.listenText) {
+    html += '<button class="tts-btn" onclick="speakQ(' + currentQ + ')">🔊 듣기</button>';
+    html += '<span class="tts-hint">버튼을 눌러 들으세요 (반복 가능)</span>';
+  }
+
+  html += '<div class="q-text">' + escapeHTML(q.q).replace(/\n/g, '<br>') + '</div>';
+
+  if (q.dialogue) {
+    html += '<div class="dialogue">' + escapeHTML(q.dialogue) + '</div>';
+  }
+
+  if (q.type === 'mc') {
+    html += '<div class="options">';
+    q.options.forEach((opt, i) => {
+      const checked = answers[currentQ] === i ? 'checked' : '';
+      const selected = answers[currentQ] === i ? 'selected' : '';
+      const marker = ['①','②','③','④'][i] || (i+1);
+      html += '<label class="option ' + selected + '">';
+      html += '<input type="radio" name="opt" value="' + i + '" ' + checked + ' onchange="selectAnswer(' + i + ')">';
+      html += '<span>' + marker + ' ' + escapeHTML(opt) + '</span>';
+      html += '</label>';
+    });
+    html += '</div>';
+  } else if (q.type === 'short') {
+    const val = answers[currentQ] || '';
+    html += '<input type="text" class="short-input" id="shortAns" value="' + escapeAttr(val) + '" ';
+    html += 'oninput="answers[' + currentQ + '] = this.value" ';
+    html += 'placeholder="' + escapeAttr(q.hint || '답을 입력하세요') + '" autocomplete="off">';
+  }
+
+  container.innerHTML = html;
+
+  document.getElementById('progressFill').style.width = ((currentQ + 1) / questions.length * 100) + '%';
+  document.getElementById('prevBtn').disabled = currentQ === 0;
+  if (currentQ === questions.length - 1) {
+    document.getElementById('nextBtn').classList.add('hidden');
+    document.getElementById('submitBtn').classList.remove('hidden');
+  } else {
+    document.getElementById('nextBtn').classList.remove('hidden');
+    document.getElementById('submitBtn').classList.add('hidden');
+  }
+
+  if (q.type === 'short') {
+    setTimeout(() => {
+      const el = document.getElementById('shortAns');
+      if (el) el.focus();
+    }, 60);
+  }
+}
+
+function escapeHTML(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function escapeAttr(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function selectAnswer(i) {
+  answers[currentQ] = i;
+  document.querySelectorAll('.option').forEach((el, idx) => {
+    if (idx === i) el.classList.add('selected');
+    else el.classList.remove('selected');
+  });
+}
+
+function nextQuestion() {
+  if (currentQ < questions.length - 1) {
+    currentQ++;
+    renderQuestion();
+  }
+}
+function prevQuestion() {
+  if (currentQ > 0) {
+    currentQ--;
+    renderQuestion();
+  }
+}
+
+/* ====== TTS ====== */
+function speakQ(idx) {
+  const q = questions[idx];
+  if (!q || !q.listenText) return;
+  speak(q.listenText);
+}
+function speak(text) {
+  if (!('speechSynthesis' in window)) {
+    alert('이 브라우저는 음성(TTS) 듣기를 지원하지 않습니다. 다른 브라우저로 접속해 보세요.');
+    return;
+  }
+  try { speechSynthesis.cancel(); } catch(e) {}
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-US';
+  u.rate = 0.85;
+  u.pitch = 1.0;
+  const voices = speechSynthesis.getVoices();
+  const enVoice = voices.find(v => /en[-_]US/i.test(v.lang)) || voices.find(v => /^en/i.test(v.lang));
+  if (enVoice) u.voice = enVoice;
+  speechSynthesis.speak(u);
+}
+if ('speechSynthesis' in window) {
+  window.speechSynthesis.onvoiceschanged = () => {};
+  setTimeout(() => speechSynthesis.getVoices(), 200);
+}
+
+/* ====== Grading ====== */
+function normalize(s) {
+  return String(s||'')
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, ' ')
+    .replace(/[.,!?]/g, '')
+    .replace(/['']/g, '');
+}
+function gradeQuestion(i) {
+  const q = questions[i];
+  const a = answers[i];
+  if (q.type === 'mc') return a === q.answer;
+  if (q.type === 'short') {
+    if (a === null || a === undefined || String(a).trim() === '') return false;
+    const userA = normalize(a);
+    return q.answers.some(c => normalize(c) === userA);
+  }
+  return false;
+}
+
+/* ====== Submit ====== */
+function submitTest() {
+  const unanswered = answers.reduce((n,a,i) => {
+    if (a === null || a === undefined) return n + 1;
+    if (typeof a === 'string' && a.trim() === '') return n + 1;
+    return n;
+  }, 0);
+  if (unanswered > 0) {
+    if (!confirm('아직 ' + unanswered + '개의 문제를 풀지 않았습니다.\n정말 제출할까요?')) return;
+  } else {
+    if (!confirm('20문제를 모두 풀었습니다.\n제출할까요?')) return;
+  }
+
+  let score = 0;
+  let recScore = 0, repScore = 0, recTotal = 0, repTotal = 0;
+  const reviews = questions.map((q, i) => {
+    const correct = gradeQuestion(i);
+    if (correct) score++;
+    if (q.domain === 'reception') { recTotal++; if (correct) recScore++; }
+    else { repTotal++; if (correct) repScore++; }
+    return { i, q, correct, userAns: answers[i] };
+  });
+
+  studentInfo.endTime = new Date();
+  studentInfo.score = score;
+  studentInfo.recScore = recScore; studentInfo.recTotal = recTotal;
+  studentInfo.repScore = repScore; studentInfo.repTotal = repTotal;
+  studentInfo.reviews = reviews;
+
+  document.getElementById('test').classList.add('hidden');
+  document.getElementById('results').classList.remove('hidden');
+  document.getElementById('studentInfo').textContent =
+    studentInfo.grade + '학년 ' + studentInfo.cls + '반 ' + studentInfo.num + '번 ' + studentInfo.name;
+  document.getElementById('scoreNum').textContent = score + ' / ' + questions.length;
+  document.getElementById('scoreDomain').textContent =
+    '이해 ' + recScore + '/' + recTotal + '   •   표현 ' + repScore + '/' + repTotal;
+
+  let html = '';
+  reviews.forEach(r => {
+    const q = r.q;
+    const userText = q.type === 'mc'
+      ? (Number.isInteger(r.userAns) && q.options[r.userAns] !== undefined ? q.options[r.userAns] : '미응답')
+      : (r.userAns && String(r.userAns).trim() !== '' ? r.userAns : '미응답');
+    const correctText = q.type === 'mc' ? q.options[q.answer] : q.answers[0];
+    html += '<div class="review-item ' + (r.correct ? 'correct' : 'wrong') + '">';
+    html += '<span class="review-num">' + (r.i + 1) + '.</span>';
+    html += '<span class="q-domain ' + q.domain + '" style="font-size:11px;padding:2px 8px;">' + (q.domain === 'reception' ? '이해' : '표현') + '</span>';
+    html += '<span class="review-mark ' + (r.correct ? 'correct' : 'wrong') + '">' + (r.correct ? '✓' : '✗') + '</span>';
+    html += '<div class="review-q">' + escapeHTML(q.q).replace(/\n/g, ' ') + '</div>';
+    html += '<div class="review-ans">';
+    html += '내 답: <span class="' + (r.correct ? 'ok' : 'your') + '">' + escapeHTML(String(userText)) + '</span>';
+    if (!r.correct) html += '<br>정답: <span class="ok">' + escapeHTML(String(correctText)) + '</span>';
+    html += '</div>';
+    html += '</div>';
+  });
+  document.getElementById('reviewList').innerHTML = html;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  sendToGAS(reviews);
+}
+
+/* ====== GAS(Google Sheets) submission ====== */
+function sendToGAS(reviews) {
+  const statusEl = document.getElementById('sendStatus');
+  if (!GAS_URL || GAS_URL.indexOf('http') !== 0) {
+    statusEl.style.color = '#888';
+    statusEl.innerHTML = '※ 결과 저장 서버가 설정되지 않았습니다. 아래 <b>결과 저장(.txt)</b> 버튼을 눌러 선생님께 제출하세요.';
+    return;
+  }
+  statusEl.style.color = '#3498db';
+  statusEl.textContent = '⏳ 선생님께 결과 전송 중...';
+
+  const shortAns = {};
+  reviews.forEach(r => {
+    if (r.q.type === 'short') shortAns[r.i + 1] = (r.userAns || '').toString();
+  });
+
+  const payload = {
+    grade: studentInfo.grade,
+    cls: studentInfo.cls,
+    num: studentInfo.num,
+    name: studentInfo.name,
+    score: studentInfo.score,
+    recScore: studentInfo.recScore,
+    recTotal: studentInfo.recTotal,
+    repScore: studentInfo.repScore,
+    repTotal: studentInfo.repTotal,
+    startTime: studentInfo.startTime.toISOString(),
+    endTime: studentInfo.endTime.toISOString(),
+    durationSec: Math.round((studentInfo.endTime - studentInfo.startTime) / 1000),
+    marks: reviews.map(r => r.correct ? 'O' : 'X'),
+    shortAnswers: shortAns
+  };
+
+  const form = new FormData();
+  form.append('payload', JSON.stringify(payload));
+
+  fetch(GAS_URL, { method: 'POST', mode: 'no-cors', body: form })
+    .then(() => {
+      statusEl.style.color = '#27ae60';
+      statusEl.textContent = '✓ 결과가 선생님께 전송되었습니다.';
+    })
+    .catch(err => {
+      console.error('GAS submit failed:', err);
+      statusEl.style.color = '#e74c3c';
+      statusEl.innerHTML = '⚠ 전송 실패. <b>결과 저장(.txt)</b> 버튼을 눌러 파일로 제출해 주세요.';
+    });
+}
+
+/* ====== Download Result ====== */
+function downloadResult() {
+  const info = studentInfo;
+  const pad = n => (n < 10 ? '0' + n : '' + n);
+  const fmtTime = d => d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+
+  let txt = '=== 6학년 영어 3단원 평가 결과 ===\r\n';
+  txt += '학년/반/번호: ' + info.grade + '학년 ' + info.cls + '반 ' + info.num + '번\r\n';
+  txt += '이름: ' + info.name + '\r\n';
+  txt += '응시 시작: ' + fmtTime(info.startTime) + '\r\n';
+  txt += '응시 종료: ' + fmtTime(info.endTime) + '\r\n';
+  txt += '\r\n총점: ' + info.score + ' / ' + questions.length + '\r\n';
+  txt += '이해 영역: ' + info.recScore + ' / ' + info.recTotal + '\r\n';
+  txt += '표현 영역: ' + info.repScore + ' / ' + info.repTotal + '\r\n';
+  txt += '\r\n=== 문항별 결과 ===\r\n';
+  info.reviews.forEach(r => {
+    const q = r.q;
+    const userText = q.type === 'mc'
+      ? (Number.isInteger(r.userAns) && q.options[r.userAns] !== undefined ? q.options[r.userAns] : '미응답')
+      : (r.userAns && String(r.userAns).trim() !== '' ? r.userAns : '미응답');
+    const correctText = q.type === 'mc' ? q.options[q.answer] : q.answers[0];
+    txt += '\r\n' + (r.i+1) + '. [' + (q.domain === 'reception' ? '이해' : '표현') + '] ' + (r.correct ? '✓' : '✗') + '\r\n';
+    txt += '   문제: ' + q.q.replace(/\n/g, ' ') + '\r\n';
+    if (q.dialogue) txt += '   지문: ' + q.dialogue.replace(/\n/g, ' / ') + '\r\n';
+    if (q.listenText) txt += '   듣기 원문: ' + q.listenText + '\r\n';
+    txt += '   내 답: ' + userText + '\r\n';
+    if (!r.correct) txt += '   정답: ' + correctText + '\r\n';
+  });
+
+  const blob = new Blob(['﻿' + txt], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = info.grade + '-' + info.cls + '-' + (String(info.num).length === 1 ? '0' + info.num : info.num) + '_' + info.name + '_3단원평가.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+</script>
 </body>
 </html>
